@@ -16,6 +16,8 @@ class Barang extends Super
         $this->alter->table_skip = array('id_barang','tanggal_input');
         $this->alter->detail_skip = array('id_barang');
         $this->alter->money_format = array('harga');
+        $this->alter->table_show = array('id_barang','nama_barang','harga','gambar','deskripsi');
+
         /**
          * Perintah generate CRUD di html
          */

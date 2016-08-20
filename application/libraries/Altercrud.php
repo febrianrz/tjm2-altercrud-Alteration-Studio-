@@ -7,7 +7,12 @@ class Altercrud
     public $tambah_skip = array();
     public $table_skip = array();
     public $detail_skip = array();
+    public $edit_skip = array();
     public $delete_skip = array();
+    public $table_show = array();
+    public $detail_show = array();
+    public $edit_show = array();
+
     public $money_format = array();
     public $dir_upload  = '/assets/upload/';
     public $edit = true;
@@ -34,6 +39,7 @@ class Altercrud
     private $field_table_key_alias;
     private $table_alias;
     private $display_as = array();
+    private $trigger_field = array();
     private $file_upload_multiple = array();
     private $date_type = array('timestamp','date','time','datetime');
 
@@ -52,7 +58,7 @@ class Altercrud
      */
     private function setField()
     {
-        $this->fields = $this->model->setField($this->table);
+        $this->fields = $this->model->setField($this->table, $this->table_show);
         $this->generateAliasField();
     }
 
@@ -84,9 +90,6 @@ class Altercrud
     public function setTable($table)
     {
         $this->table = $table;
-        $this->setField();
-        $this->setPrimaryField();
-        $this->setTableAlias();
     }
 
     /**
@@ -167,6 +170,13 @@ class Altercrud
     }
 
     /**
+    * Triggering field
+    **/
+    public function setSelectTriggerFieldBy($field, $field_trigger, $table_trigger, $field_show_table_trigger, $where)
+    {
+    }
+
+    /**
      * @void
      * melakukan generate alias name dari field tabel yang di crud
      */
@@ -188,6 +198,10 @@ class Altercrud
 
     public function generate()
     {
+        $this->setField();
+        $this->setPrimaryField();
+        $this->setTableAlias();
+
         if ($this->state == 'create') {
             return $this->generateAdd();
         } elseif ($this->state == 'read') {
@@ -195,11 +209,9 @@ class Altercrud
         } elseif ($this->state == 'edit') {
             $exp = explode('/', str_replace('http://', '', $this->base_url));
             $this->current_id = $exp[count($exp)-1];
-
             if (!is_numeric($this->current_id)) {
                 redirect(base_url());
             }
-
             return $this->generateEdit();
         } elseif ($this->state == 'delete') {
             if (isset($_POST['deleteAlter'])) {
