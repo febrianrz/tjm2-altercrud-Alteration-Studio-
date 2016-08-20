@@ -1,0 +1,28 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+include "Super.php";
+class ||nama_file|| extends Super{
+
+    protected $alter;
+
+    public function __construct(){
+        parent::__construct();
+        $this->data['menu_id'] = ||menu_id|| ;
+        $this->alter = new Altercrud();
+        $this->alter->setTable( ||nama_table|| );
+        $this->alter->table_skip = array('id');
+        $this->alter->tambah_skip = array('id');
+        $this->alter->table_skip = array('id');
+        $this->alter->detail_skip = array('id');
+        /**
+         * Perintah generate CRUD di html
+         */
+        $this->generateTitle();
+        $this->data['output'] = $this->alter->generate();
+    }
+
+    public function index(){
+        $this->load->view($this->data['user_view'],$this->data);
+    }
+
+}
